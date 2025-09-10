@@ -346,7 +346,7 @@ class ClinicAppointment(models.Model):
                     raise UserError(self.env._("Doctor %s is not available on %s. Please select a valid time within their working hours.")
                         % (rec.doctor_name.name, weekday.capitalize())
                     )
-
+    # Prevent Deletion
     def unlink(self):
         done_appointments = self.filtered(lambda rec: rec.stage == 'done')
         if done_appointments:
