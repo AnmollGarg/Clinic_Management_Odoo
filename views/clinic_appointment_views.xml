@@ -44,7 +44,7 @@
         <field name="name">clinic.appointment.form</field>
         <field name="model">clinic.appointment</field>
         <field name="arch" type="xml">
-            <form string="Appointment" readonly = "stage in ('done','cancelled')">
+            <form string="Appointment">
                 <header>
                     <field name="stage" widget="statusbar"/>
                     <button name="action_book" type="object" string="Book" class="btn-primary" invisible="stage != 'draft'"/>
@@ -64,15 +64,15 @@
                     </h1>
                     <group col="2">
                         <group string="Patient Clinic Details">
-                            <field name="patient_id"/>
-                            <field name="clinic_id"/>
-                            <field name="appointment_date" widget="datetime" options="{'format': 'yyyy-MM-dd HH:mm'}"/>
-                            <field name="appointment_end_date" widget="datetime" options="{'format': 'yyyy-MM-dd HH:mm'}"/>
+                            <field name="patient_id" readonly = "stage in ('done','cancelled')"/>
+                            <field name="clinic_id" readonly = "stage in ('done','cancelled')"/>
+                            <field name="appointment_date" widget="datetime" options="{'format': 'yyyy-MM-dd HH:mm'}" readonly = "stage in ('done','cancelled')"/>
+                            <field name="appointment_end_date" widget="datetime" options="{'format': 'yyyy-MM-dd HH:mm'}" readonly = "stage in ('done','cancelled')"/>
                             <field name="user_timezone" readonly="1"/>
                             <field name="appointment_duration" readonly="1"/>
                         </group>
                         <group string="Doctor  Timing">
-                            <field name="doctor_name"/>
+                            <field name="doctor_name" readonly = "stage in ('done','cancelled')"/>
                             <field name="is_doctor_available"/>
                             <field name="booked_slots_times" readonly="1"/>
                         </group>
@@ -80,8 +80,8 @@
                     <separator string="Other Information"/>
                     <group col="2">
                         <field name="responsible"/>
-                        <field name="appointment_type" widget="radio"/>
-                        <field name="priority" widget="priority"/>
+                        <field name="appointment_type" widget="radio" readonly = "stage in ('done','cancelled')"/>
+                        <field name="priority" widget="priority" readonly = "stage in ('done','cancelled')"/>
                     </group>
                     <group>
                         <field name="cancel_reason" invisible="stage != 'cancelled'"/>
@@ -96,7 +96,7 @@
                     </group>
                     <notebook>
                         <page string="Related Cases" name="related_cases">
-                            <field name="related_cases_ids">
+                            <field name="related_cases_ids" readonly = "stage in ('done','cancelled')">
                                 <list>
                                     <field name="case_id"/>
                                     <field name="doctor_name"/>

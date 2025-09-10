@@ -43,20 +43,19 @@
                             <field name="patient_id"/>
                             <field name="age"/>
                             <field name="gender_type"/>
-                            <field name="doctor_name"/>
+                            <field name="doctor_name" readonly = "stage in ('done','cancelled')"/>
                         </group>
                         <group>
-                            <field name="appointment_reference" options="{'no_create': true}"/>
-                            <field name="followup_for_appointment_id"
-                                   readonly="1"/>
+                            <field name="appointment_reference" options="{'no_create': true}" readonly = "stage in ('done','cancelled')"/>
+                            <field name="followup_for_appointment_id" readonly="1"/>
                             <field name="case_start_date"/>
                             <field name="case_closed_date"/>
-                            <field name="responsible_person"/>
+                            <field name="responsible_person" readonly = "stage in ('done','cancelled')"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Problem and Solution">
-                            <field name="problem_solution_ids">
+                            <field name="problem_solution_ids" readonly = "stage in ('done','cancelled')">
                                 <list editable="bottom">
                                     <field name="problem"/>
                                     <field name="solution"/>
@@ -65,9 +64,9 @@
                             </field>
                         </page>
                         <page string="Medicines">
-                            <field name="medicines_ids">
+                            <field name="medicines_ids" readonly = "stage in ('done','cancelled')">
                                 <list editable="bottom">
-                                    <field name="product_id"/> 
+                                    <field name="product_id"/>
                                     <field name="product_description"/>
                                     <field name="product_quantity"/>
                                     <field name="product_UoM"/>
