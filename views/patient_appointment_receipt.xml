@@ -1,0 +1,195 @@
+<odoo>
+    <template id="minimal_header">
+        <div class="header">
+            <div class="row" t-if="doc and doc.clinic_id">
+                <div class="col-8">
+                    <h3><t t-esc="doc.clinic_id.clinic_name"/></h3>
+                    <div t-if="doc.clinic_id.clinic_address"><t t-esc="doc.clinic_id.clinic_address"/></div>
+                    <div>
+                        <t t-if="doc.clinic_id.street"><t t-esc="doc.clinic_id.street"/></t>
+                        <t t-if="doc.clinic_id.street2">, <t t-esc="doc.clinic_id.street2"/></t>
+                    </div>
+                    <div>
+                        <t t-if="doc.clinic_id.city"><t t-esc="doc.clinic_id.city"/></t>
+                        <t t-if="doc.clinic_id.state_id">, <t t-esc="doc.clinic_id.state_id.name"/></t>
+                        <t t-if="doc.clinic_id.zip"> <t t-esc="doc.clinic_id.zip"/></t>
+                    </div>
+                    <div t-if="doc.clinic_id.country_id"><t t-esc="doc.clinic_id.country_id.name"/></div>
+                    <div t-if="doc.clinic_id.clinic_phone">Phone: <t t-esc="doc.clinic_id.clinic_phone"/></div>
+                </div>
+                <div class="col-4 text-right">
+                    <img t-if="doc.clinic_id.logo" t-att-src="'data:image/png;base64,%s' % doc.clinic_id.logo" style="max-height: 80px;"/>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Custom minimal footer -->
+    <template id="minimal_footer">
+        <div class="footer">
+            <div class="text-center" style="border-top: 1px solid black;">
+                <div class="text-muted">
+                    Page: <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>
+        </div>
+    </template>
+    
+
+    <template id="minimal_external_layout">
+        <t t-call="clinic_management.minimal_header"/>
+        <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
+            <t t-raw="0"/>
+        </div>
+        <t t-call="clinic_management.minimal_footer"/>
+    </template>
+
+    <template id="patient_appointment_receipt">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="clinic_management.minimal_external_layout">
+                    <div class="page">
+
+                        <div class="row mb-4">
+                            <div class="col-12 text-center">
+                                <h2 style="color: #7c7bad; font-weight: bold;">Patient Appointment Receipt</h2>
+                                <h3><span t-field="doc.name"/></h3>
+                            </div>
+                        </div>
+                        
+                
+                        
+                        <!-- Main Info Section -->
+                        <div class="row">
+                            <!-- Patient Information -->
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <strong>Patient Information</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-2">
+                                            <div class="col-5">
+                                                <strong>Patient Name:</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                <span t-field="doc.patient_id.name"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Appointment Details -->
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <strong>Appointment Details</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-2">
+                                            <div class="col-5">
+                                                <strong>Date &amp; Time:</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                <span t-field="doc.appointment_date" t-options='{"format": "dd MMMM yyyy HH:mm"}'/>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-5">
+                                                <strong>End Date &amp; Time:</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                <span t-field="doc.appointment_end_date" t-options='{"format": "dd MMMM yyyy HH:mm"}'/>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-5">
+                                                <strong>Duration:</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                <span t-field="doc.appointment_duration"/>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-5">
+                                                <strong>Stage:</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                <span t-field="doc.stage"/>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-5">
+                                                <strong>Appointment Type:</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                <span t-field="doc.appointment_type"/>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-5">
+                                                <strong>Doctor Fees:</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                <span t-field="doc.doctor_fees"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Medical Team Section -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <strong>Medical Team</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-2">
+                                            <div class="col-3">
+                                                <strong>Doctor(s):</strong>
+                                            </div>
+                                            <div class="col-9">
+                                                <span t-esc="', '.join(doc.doctor_name.mapped('name'))"/>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-3">
+                                                <strong>Responsible:</strong>
+                                            </div>
+                                            <div class="col-9">
+                                                <span t-field="doc.responsible.name"/>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2" t-if="doc.clinic_id">
+                                            <div class="col-3">
+                                                <strong>Clinic:</strong>
+                                            </div>
+                                            <div class="col-9">
+                                                <span t-esc="doc.clinic_id.display_name or ''"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    
+    <!-- Receipt Action -->
+    <record id="patient_appointment_report_action" model="ir.actions.report">
+        <field name="name">Patient Appointment Receipt</field>
+        <field name="model">clinic.appointment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">clinic_management.patient_appointment_receipt</field>
+        <field name="print_report_name">'Patient Appointment Receipt - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_clinic_appointment"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

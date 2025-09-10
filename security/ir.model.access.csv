@@ -1,0 +1,48 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_clinic_management,access_clinic_management,model_clinic_management,base.group_user,1,0,0,0
+
+
+access_clinic_appointment_receptionist,clinic.appointment receptionist,model_clinic_appointment,clinic_management.clinic_group_receptionist,1,1,1,0
+access_clinic_appointment_doctor,clinic.appointment doctor,model_clinic_appointment,clinic_management.clinic_group_doctor,1,1,1,0
+access_clinic_appointment_admin,clinic.appointment admin,model_clinic_appointment,base.group_system,1,1,1,1
+access_clinic_appointment_patient,clinic.appointment patient,model_clinic_appointment,clinic_management.clinic_group_patient,1,0,0,0
+
+
+access_clinic_case_receptionist,clinic.case receptionist,model_clinic_case,clinic_management.clinic_group_receptionist,1,0,0,0
+access_clinic_case_doctor,clinic.case doctor,model_clinic_case,clinic_management.clinic_group_doctor,1,1,1,0
+access_clinic_case_admin,clinic.case admin,model_clinic_case,base.group_system,1,1,1,1
+access_clinic_case_patient,clinic.case patient,model_clinic_case,clinic_management.clinic_group_patient,1,0,0,0
+
+access_clinic_case_problem_solution_admin,clinic.case.problem.solution admin,model_clinic_case_problem_solution,clinic_management.clinic_group_admin,1,1,1,1
+access_clinic_case_problem_solution_doctor,clinic.case.problem.solution doctor,model_clinic_case_problem_solution,clinic_management.clinic_group_doctor,1,1,1,0
+access_clinic_case_problem_solution_receptionist,clinic.case.problem.solution receptionist,model_clinic_case_problem_solution,clinic_management.clinic_group_receptionist,1,0,0,0
+access_clinic_case_problem_solution_patient,clinic.case.problem.solution patient,model_clinic_case_problem_solution,clinic_management.clinic_group_patient,1,0,0,0
+access_clinic_config_manager,clinic.config manager,model_clinic_config,clinic_management.clinic_group_admin,1,1,1,1
+
+access_clinic_case_medicines_admin,clinic.case.medicines admin,model_clinic_case_medicines,clinic_management.clinic_group_admin,1,1,1,1
+access_clinic_case_medicines_doctor,clinic.case.medicines doctor,model_clinic_case_medicines,clinic_management.clinic_group_doctor,1,1,1,0
+access_clinic_case_medicines_receptionist,clinic.case.medicines receptionist,model_clinic_case_medicines,clinic_management.clinic_group_receptionist,1,0,0,0
+access_clinic_case_medicines_patient,clinic.case.medicines patient,model_clinic_case_medicines,clinic_management.clinic_group_patient,1,0,0,0
+
+access_clinic_config_admin,clinic.config admin,model_clinic_config,clinic_management.clinic_group_admin,1,1,1,1
+access_clinic_config_receptionist,clinic.config receptionist,model_clinic_config,clinic_management.clinic_group_receptionist,1,0,0,0
+access_clinic_config_doctor,clinic.config doctor,model_clinic_config,clinic_management.clinic_group_doctor,1,0,0,0
+
+access_clinic_availability_admin,clinic.availability admin,model_clinic_availability,clinic_management.clinic_group_admin,1,1,1,1
+access_clinic_availability_receptionist,clinic.availability receptionist,model_clinic_availability,clinic_management.clinic_group_receptionist,1,0,0,0
+access_clinic_availability_doctor,clinic.availability doctor,model_clinic_availability,clinic_management.clinic_group_doctor,1,0,0,0
+
+access_clinic_working_time_admin,clinic.working.time admin,model_clinic_working_time,clinic_management.clinic_group_admin,1,1,1,1
+access_clinic_working_time_receptionist,clinic.working.time receptionist,model_clinic_working_time,clinic_management.clinic_group_receptionist,1,0,0,0
+access_clinic_working_time_doctor,clinic.working.time doctor,model_clinic_working_time,clinic_management.clinic_group_doctor,1,0,0,0
+
+access_clinic_working_hour,clinic.working.hour,model_clinic_working_hour,clinic_management.clinic_group_admin,1,1,1,1
+access_clinic_working_hour_receptionist,clinic.working.hour.receptionist,model_clinic_working_hour,clinic_management.clinic_group_receptionist,1,0,0,0
+access_clinic_working_hour_doctor,clinic.working.hour.doctor,model_clinic_working_hour,clinic_management.clinic_group_doctor,1,0,0,0
+
+access_clinic_patient_admin,clinic.patient admin,model_clinic_patient,clinic_management.clinic_group_admin,1,1,1,1
+access_clinic_patient_receptionist,clinic.patient receptionist,model_clinic_patient,clinic_management.clinic_group_receptionist,1,1,1,0
+access_clinic_patient_doctor,clinic.patient doctor,model_clinic_patient,clinic_management.clinic_group_doctor,1,0,0,0
+access_clinic_patient_patient,clinic.patient patient,model_clinic_patient,clinic_management.clinic_group_patient,0,0,0,0
+
+access_appointment_cancel_wizard,access.appointment.cancel.wizard,model_appointment_cancel_wizard,base.group_user,1,1,1,0

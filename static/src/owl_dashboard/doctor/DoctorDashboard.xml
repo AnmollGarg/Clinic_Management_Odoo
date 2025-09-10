@@ -1,0 +1,118 @@
+<t t-name="clinic_management.DoctorDashboard">
+    <div class="dashboard-content">
+        <!-- Dashboard Cards -->
+        <div class="dashboard-cards">
+            <div class="dashboard-card">
+                <span class="dashboard-title">Total Appointments</span>
+                <span class="dashboard-value"><t t-esc="state.appointmentCount"/></span>
+            </div>
+            <div class="dashboard-card">
+                <span class="dashboard-title">Upcoming</span>
+                <span class="dashboard-value"><t t-esc="state.upcomingAppointments.length"/></span>
+            </div>
+            <div class="dashboard-card">
+                <span class="dashboard-title">In Progress</span>
+                <span class="dashboard-value"><t t-esc="state.ongoingAppointments.length"/></span>
+            </div>
+            <div class="dashboard-card">
+                <span class="dashboard-title">Total Cases</span>
+                <span class="dashboard-value"><t t-esc="state.caseCount"/></span>
+            </div>
+        </div>
+
+        <!-- Tables Side by Side -->
+        <div class="dashboard-tables">
+            <!-- Appointments List Section -->
+            <div class="appointments-list-container">
+                <h3>
+                    Recent Appointments
+
+                </h3>
+                <div class="appointments-list">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Patient</th>
+                                <th>Doctor</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="state.appointments" t-as="appt" t-key="appt.id">
+                                <td><t t-esc="appt.name"/></td>
+                                <td><t t-esc="appt.patient_id &amp;&amp; appt.patient_id[1]"/></td>
+                                <td><t t-esc="appt.doctor_name &amp;&amp; appt.doctor_name[1]"/></td>
+                                <td><t t-esc="appt.appointment_date"/></td>
+                                <td>
+                                    <span t-attf-class="badge bg-#{getStageColor(appt.stage)}">
+                                        <t t-esc="appt.stage"/>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr t-if="!state.appointments.length">
+                                <td colspan="5" class="text-center">No appointments found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Cases List Section -->
+            <div class="cases-list-container">
+                <h3>Recent Cases</h3>
+                <div class="cases-list">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Case ID</th>
+                                <th>Patient</th>
+                                <th>Doctor</th>
+                                <th>Start Date</th>
+                                <th>Closed Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="state.cases" t-as="case" t-key="case.id">
+                                <td><t t-esc="case.case_id"/></td>
+                                <td><t t-esc="case.patient_id &amp;&amp; case.patient_id[1]"/></td>
+                                <td><t t-esc="case.doctor_name &amp;&amp; case.doctor_name[1]"/></td>
+                                <td><t t-esc="case.case_start_date || '-'"/></td>
+                                <td><t t-esc="case.case_closed_date || '-'"/></td>
+                                <td>
+                                    <span t-attf-class="badge bg-#{case.stage === 'open' ? 'warning' : 'success'}">
+                                        <t t-esc="case.stage"/>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr t-if="!state.cases.length">
+                                <td colspan="6" class="text-center">No cases found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ongoing Appointments Section -->
+        <div class="ongoing-appointments-section">
+            <h3>Ongoing Appointments</h3>
+            <div t-if="state.ongoingAppointments.length">
+                <div t-foreach="state.ongoingAppointments" t-as="appt" t-key="appt.id" class="ongoing-appointment-card">
+                    <div><strong>Reference:</strong> <t t-esc="appt.name"/></div>
+                    <div><strong>Patient:</strong> <t t-esc="appt.patient_id &amp;&amp; appt.patient_id[1]"/></div>
+                    <div><strong>Doctor:</strong> <t t-esc="appt.doctor_name &amp;&amp; appt.doctor_name[1]"/></div>
+                    <div><strong>Date:</strong> <t t-esc="appt.appointment_date"/></div>
+                    <div><strong>Status:</strong>
+                        <span t-attf-class="badge bg-#{getStageColor(appt.stage)}"><t t-esc="appt.stage"/></span>
+                    </div>
+                    <button class="btn btn-primary" t-on-click="() => onAddNewCase(appt)" style="align-self:flex-end;">
+                        Add New Case
+                    </button>
+                </div>
+            </div>
+            <div t-if="!state.ongoingAppointments.length" class="text-center">No ongoing appointments found</div>
+        </div>
+    </div>
+</t>

@@ -1,0 +1,66 @@
+<templates>
+    <t t-name="clinic_management.AppointmentsPage">
+        <link rel="stylesheet" type="text/css" href="/custom_addons/clinic_management/static/src/owl_dashboard/system_admin/Appointments.scss"/>
+        <div class="appointments-container p-4">
+            <div class="row mb-4">
+                <div class="col d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2>Clinic Appointments</h2>
+                        <p>Total appointments: <span class="badge bg-primary" t-esc="state.appointmentCount"/></p>
+                    </div>
+                    <button class="btn btn-primary" t-on-click="onNewAppointment">
+                        <i class="fa fa-plus me-1"></i> New Appointment
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- Appointments Table -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Reference</th>
+                            <th>Date &amp; Time</th>
+                            <th>End Time</th>
+                            <th>Patient</th>
+                            <th>Doctor</th>
+                            <th>Stage</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-if="state.appointments.length === 0">
+                            <tr>
+                                <td colspan="7" class="text-center">No appointments found</td>
+                            </tr>
+                        </t>
+                        <t t-foreach="state.appointments" t-as="appointment" t-key="appointment.id">
+                            <tr>
+                                <td t-esc="appointment.name"/>
+                                <td t-esc="formatDateTime(appointment.appointment_date)"/>
+                                <td t-esc="formatDateTime(appointment.appointment_end_date)"/>
+                                <td t-esc="appointment.patient_id[1]"/>
+                                <td t-esc="appointment.doctor_name[1]"/>
+                                <td>
+                                    <span t-att-class="getStageClass(appointment.stage)" t-esc="appointment.stage"/>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary me-1"
+                                        t-on-click="() => onEditAppointment(appointment.id)">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </button>
+                                    <button class="btn btn-sm btn-success"
+                                        t-if="appointment.stage === 'confirm'"
+                                        t-on-click="() => onNewCase(appointment.id)">
+                                        <i class="fa fa-plus"></i> New Case
+                                    </button>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,110 @@
+<t t-name="clinic_management.DoctorCases">
+    <div class="doctor-case-list p-4">
+     <h4>
+                Doctor:
+                <span t-esc="state.appointments.length &amp;&amp; state.appointments[0].doctor_name &amp;&amp; state.appointments[0].doctor_name[1] || state.doctorName"/>
+            </h4>
+        <!-- Cards Section -->
+        <div class="dashboard-cards mb-4">
+            <div class="dashboard-card">
+                <span class="dashboard-title">Total Cases</span>
+                <span class="dashboard-value"><t t-esc="state.allCases.length"/></span>
+            </div>
+            <div class="dashboard-card">
+                <span class="dashboard-title">Active Cases</span>
+                <span class="dashboard-value"><t t-esc="state.ongoingCases.length"/></span>
+            </div>
+            <div class="dashboard-card">
+                <span class="dashboard-title">Draft Cases</span>
+                <span class="dashboard-value"><t t-esc="state.upcomingCases.length"/></span>
+            </div>
+        </div>
+        <!-- Cases Table -->
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Case Reference</th>
+                        <th>Appointment</th>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Stage</th>
+                        <th>Start Date</th>
+                        <th>Closed Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-if="state.cases.length === 0">
+                        <tr>
+                            <td colspan="8" class="text-center">No cases found</td>
+                        </tr>
+                    </t>
+                    <t t-foreach="state.cases" t-as="case" t-key="case.id">
+                        <tr>
+                            <td t-esc="case.case_id"/>
+                            <td t-esc="case.appointment_reference &amp;&amp; case.appointment_reference[1] || 'N/A'"/>
+                            <td t-esc="case.patient_id &amp;&amp; case.patient_id[1]"/>
+                            <td t-esc="case.doctor_name &amp;&amp; case.doctor_name[1]"/>
+                            <td>
+                                <span t-att-class="getStageClass(case.stage)" t-esc="case.stage"/>
+                            </td>
+                            <td t-esc="case.case_start_date"/>
+                            <td t-esc="case.case_closed_date"/>
+                            <td>
+                                <t t-if="case.stage !== 'done'">
+                                    <button class="btn btn-sm btn-outline-primary"
+                                        t-on-click="() => onEditCase(case.id)">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </button>
+                                </t>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+        <!-- Appointments Table -->
+        <div class="table-responsive mb-5">
+            <h3>Appointments</h3>
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Reference</th>
+                        <th>Date &amp; Time</th>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Stage</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-if="state.appointments.length === 0">
+                        <tr>
+                            <td colspan="6" class="text-center">No appointments found</td>
+                        </tr>
+                    </t>
+                    <t t-foreach="state.appointments" t-as="appointment" t-key="appointment.id">
+                        <tr>
+                            <td t-esc="appointment.name"/>
+                            <td t-esc="appointment.appointment_date"/>
+                            <td t-esc="appointment.patient_id &amp;&amp; appointment.patient_id[1]"/>
+                            <td t-esc="appointment.doctor_name &amp;&amp; appointment.doctor_name[1]"/>
+                            <td>
+                                <span t-att-class="getStageClass(appointment.stage)" t-esc="appointment.stage"/>
+                            </td>
+                            <td>
+                                <t t-if="appointment.stage === 'confirm'">
+                                    <button class="btn btn-sm btn-outline-primary"
+                                        t-on-click="() => onAddNewCase(appointment)">
+                                        <i class="fa fa-plus"></i> New Case
+                                    </button>
+                                </t>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</t>

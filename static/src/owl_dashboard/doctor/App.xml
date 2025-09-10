@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="clinic_management.DoctorApp">
+        <div class="o_clinic_dashboard">
+            <div class="dashboard-layout">
+                <!-- Side Navbar -->
+                <nav class="side-navbar">
+                    <div class="profile-image">
+                        <img src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png" alt="User Profile Image"/>
+                    </div>
+
+                    <div class="profile">
+                        <span class="profile-role">System Admin</span>
+                    </div>
+
+                    <ul class="nav-list">
+                        <li>
+                            <a href="#" t-attf-class="nav-link {{ router.state.current === 'dashboard' ? 'active' : '' }}"
+                               t-on-click.prevent="() => router.navigate('dashboard')">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#" t-attf-class="nav-link {{ router.state.current === 'doctor_cases' ? 'active' : '' }}"
+                               t-on-click.prevent="() => router.navigate('doctor_cases')">Doctor Appointment &amp; Cases</a>
+                        </li>
+                        <li>
+                            <a href="#" t-attf-class="nav-link {{ router.state.current === 'patients' ? 'active' : '' }}"
+                               t-on-click.prevent="() => router.navigate('patients')">Patients</a>
+                        </li>
+                    </ul>
+                </nav>
+
+
+                <div class="main-content">
+                    <t t-component="router.getCurrentComponent()" t-props="{}"/>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

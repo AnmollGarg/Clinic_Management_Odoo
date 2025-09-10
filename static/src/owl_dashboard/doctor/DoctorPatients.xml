@@ -1,0 +1,38 @@
+<t t-name="clinic_management.DoctorPatients">
+    <div class="doctor-patients-list p-4">
+        <!-- Cards Section -->
+        <div class="dashboard-cards mb-4">
+            <div class="dashboard-card">
+                <span class="dashboard-title">Total Patients</span>
+                <span class="dashboard-value"><t t-esc="state.patients.length"/></span>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-if="state.patients.length === 0">
+                        <tr>
+                            <td colspan="4" class="text-center">No patients found</td>
+                        </tr>
+                    </t>
+                    <t t-foreach="state.patients" t-as="patient" t-key="patient.id">
+                        <tr>
+
+                            <td t-esc="patient.name"/>
+                            <td t-esc="patient.email"/>
+                            <td t-esc="patient.phone"/>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</t>

@@ -1,0 +1,73 @@
+<odoo>
+    <data>
+        <!-- Patient can only see his own appointments -->
+        <record id="clinic_appointment_patient_rule" model="ir.rule">
+            <field name="name">Patient: Own Appointments</field>
+            <field name="model_id" ref="model_clinic_appointment"/>
+            <field name="groups" eval="[(4, ref('clinic_management.clinic_group_patient'))]"/>
+            <field name="domain_force">[('patient_id', '=', user.partner_id.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+        <!-- Patient can only see his own cases -->
+        <record id="clinic_case_patient_rule" model="ir.rule">
+            <field name="name">Patient: Own Cases</field>
+            <field name="model_id" ref="model_clinic_case"/>
+            <field name="groups" eval="[(4, ref('clinic_management.clinic_group_patient'))]"/>
+            <field name="domain_force">[('patient_id', '=', user.partner_id.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+        <!-- System Admin can see all clinic cases -->
+        <record id="clinic_case_admin_rule" model="ir.rule">
+            <field name="name">System Admin can see all clinic cases</field>
+            <field name="model_id" ref="model_clinic_case"/>
+            <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- System Admin can see all clinic appointments -->
+        <record id="clinic_appointment_admin_rule" model="ir.rule">
+            <field name="name">System Admin can see all clinic appointments</field>
+            <field name="model_id" ref="model_clinic_appointment"/>
+            <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+
+        <record id="clinic_appointment_doctor_rule" model="ir.rule">
+            <field name="name">Doctor: Own Appointments</field>
+            <field name="model_id" ref="model_clinic_appointment"/>
+            <field name="groups" eval="[(4, ref('clinic_management.clinic_group_doctor'))]"/>
+            <field name="domain_force">[('doctor_name', '=', user.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+
+        <record id="clinic_case_doctor_rule" model="ir.rule">
+            <field name="name">Doctor: Own Cases</field>
+            <field name="model_id" ref="model_clinic_case"/>
+            <field name="groups" eval="[(4, ref('clinic_management.clinic_group_doctor'))]"/>
+            <field name="domain_force">[('doctor_name', '=', user.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="module_category_clinic_management" model="ir.module.category">
+            <field name="name">Clinic Management</field>
+            <field name="description">Manage clinic operations, appointments, and patients</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="clinic_group_patient" model="res.groups">
+            <field name="name">Patient</field>
+            <field name="category_id" ref="module_category_clinic_management"/>
+        </record>
+
+        <record id="clinic_group_receptionist" model="res.groups">
+            <field name="name">Receptionist</field>
+            <field name="category_id" ref="module_category_clinic_management"/>
+        </record>
+
+        <record id="clinic_group_doctor" model="res.groups">
+            <field name="name">Doctor</field>
+            <field name="category_id" ref="module_category_clinic_management"/>
+        </record>
+
+        <record id="clinic_group_admin" model="res.groups">
+            <field name="name">System Admin</field>
+            <field name="category_id" ref="module_category_clinic_management"/>
+            <field name="implied_ids" eval="[(4, ref('clinic_group_patient')), (4, ref('clinic_group_receptionist')), (4, ref('clinic_group_doctor'))]"/>
+        </record>
+
+        <record id="clinic_dashboard_menu_rule" model="ir.model.access">
+            <field name="name">Clinic Dashboard Access</field>
+            <field name="model_id" ref="base.model_ir_actions_client"/>
+            <field name="group_id" ref="base.group_system"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+    </data>
+</odoo>
+
+
+

@@ -1,0 +1,25 @@
+<odoo>
+    <menuitem id="menu_root" name="Clinic Management"/>
+    <menuitem id="clinic_management_root_menu" name="Clinic Management" sequence="1"/>
+    <menuitem id="menu_clinic_consultation_list" name="Consultation" parent="clinic_management_root_menu" sequence="10"/>
+    <menuitem id="clinic_patient_menu" name="Patients" parent="clinic_management_root_menu" sequence="20" action="clinic_management.action_res_partner_patient" groups="clinic_management.clinic_group_admin,clinic_management.clinic_group_receptionist,clinic_management.clinic_group_doctor"/>
+    <menuitem id="menu_clinic_appointment" name="Appointments" parent="menu_clinic_consultation_list" action="clinic_management.action_clinic_appointment" sequence="20"/>
+    <menuitem id="menu_clinic_case" name="Cases" parent="menu_clinic_consultation_list" action="clinic_management.action_clinic_case" sequence="30"/>
+
+    <!-- Configuration -->
+    <menuitem id="menu_clinic_configuration" name="Configuration" parent="clinic_management_root_menu" sequence="30" groups="clinic_management.clinic_group_admin"/>
+    <menuitem id="menu_clinic_working_time" name="Working Time" parent="menu_clinic_configuration" action="clinic_management.action_clinic_working_time" sequence="20" groups="clinic_management.clinic_group_admin"/>
+    <menuitem id="menu_clinic_clinic" name="Clinic" parent="menu_clinic_configuration" action="clinic_management.action_clinic_config" sequence="30" groups="clinic_management.clinic_group_admin"/>
+
+    <menuitem id="menu_clinic_dashboard" name="Clinic Dashboard" parent="menu_root" sequence="1"/>
+    <record id="action_clinic_dashboard" model="ir.actions.client">
+        <field name="name">Clinic Dashboards</field>
+        <field name="tag">clinic_management.Dashboard</field>
+        <field name="target">main</field>
+    </record>
+
+    <!-- DDashboard Menu  -->
+    <menuitem id="menu_clinic_dashboard_system_admin" name="System Admin" parent="menu_clinic_dashboard" action="action_clinic_dashboard" groups="clinic_management.clinic_group_admin"/>
+    <menuitem id="menu_doctor_dashboard" name="Doctor Dashboard" action="action_doctor_dashboard" parent="menu_clinic_dashboard"/>
+
+</odoo>

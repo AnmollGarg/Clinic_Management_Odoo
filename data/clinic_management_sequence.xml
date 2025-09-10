@@ -1,0 +1,21 @@
+<odoo>
+    <record id="seq_clinic_appointment" model="ir.sequence">
+        <field name="name">Clinic Appointment Sequence</field>
+        <field name="code">clinic.appointment</field>
+        <field name="prefix">APT</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="implementation">no_gap</field>
+    </record>
+
+    <record id="seq_clinic_case" model="ir.sequence">
+        <field name="name">Clinic Case Sequence</field>
+        <field name="code">clinic.case</field>
+        <field name="prefix">CASE</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="implementation">no_gap</field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,97 @@
+<t t-name="clinic_management.CasesPage">
+    <link rel="stylesheet" type="text/css" href="/custom_addons/clinic_management/static/src/owl_dashboard/system_admin/Cases.scss"/>
+    <div class="doctor-cases-page">
+        <h2>Doctor Cases</h2>
+        
+        <!-- Doctor's Cases Summary Cards -->
+        <div class="dashboard-cards mb-4">
+            <div class="dashboard-card">
+                <span class="dashboard-title">Total Cases</span>
+                <span class="dashboard-value"><t t-esc="state.totalCases"/></span>
+            </div>
+            <div class="dashboard-card">
+                <span class="dashboard-title">Open Cases</span>
+                <span class="dashboard-value"><t t-esc="state.openCases"/></span>
+            </div>
+            <div class="dashboard-card">
+                <span class="dashboard-title">Completed Cases</span>
+                <span class="dashboard-value"><t t-esc="state.completedCases"/></span>
+            </div>
+        </div>
+        
+        <!-- Doctor's Cases List Section -->
+        <div class="cases-list-container">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3>All Cases Assigned to You</h3>
+                <button class="btn btn-primary" t-on-click="onNewCase">
+                    <i class="fa fa-plus me-1"></i> New Case
+                </button>
+            </div>
+            <div class="cases-list table-responsive">
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Case ID</th>
+                            <th>Patient</th>
+                            <th>Doctor</th>
+                            <th>Start Date</th>
+                            <th>Status</th>
+                            <th>Payment</th>
+                            <th style="min-width:220px;">Problems &amp; Solutions</th>
+                            <th style="min-width:220px;">Medicines</th>
+                            <th>Actions</th> <!-- Add this column -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="state.cases" t-as="case" t-key="case.id">
+                            <td><t t-esc="case.case_id"/></td>
+                            <td><t t-esc="case.patient_id[1]"/></td>
+                            <td><t t-esc="case.doctor_name[1]"/></td>
+                            <td><t t-esc="case.case_start_date"/></td>
+                            <td>
+                                <span t-attf-class="badge bg-#{case.stage === 'draft' ? 'secondary' : case.stage === 'confirmed' ? 'primary' : case.stage === 'done' ? 'success' : 'danger'}">
+                                    <t t-esc="case.stage"/>
+                                </span>
+                            </td>
+                            <td>
+                                <span t-attf-class="badge bg-#{case.is_paid ? 'success' : 'warning'}">
+                                    <t t-esc="case.is_paid ? 'Paid' : 'Unpaid'"/>
+                                </span>
+                            </td>
+                            <td>
+                                <div t-if="case.problem_solutions &amp;&amp; case.problem_solutions.length">
+                                    <div t-foreach="case.problem_solutions" t-as="ps" t-key="ps.id" class="card mb-2 p-2 border">
+                                        <div><strong>Problem:</strong> <t t-esc="ps.problem"/></div>
+                                        <div><strong>Solution:</strong> <t t-esc="ps.solution"/></div>
+                                        <div><strong>Description:</strong> <t t-esc="ps.description_ids"/></div>
+                                    </div>
+                                </div>
+                                <span t-if="!case.problem_solutions || !case.problem_solutions.length" class="text-muted">No data</span>
+                            </td>
+                            <td>
+                                <div t-if="case.medicines &amp;&amp; case.medicines.length">
+                                    <div t-foreach="case.medicines" t-as="med" t-key="med.id" class="card mb-2 p-2 border">
+                                        <div><strong>Name:</strong>
+                                            <t t-esc="med.product_id[1]"/>
+                                        </div>
+                                        <div><strong>Description:</strong> <t t-esc="med.product_description"/></div>
+                                        <div><strong>Qty:</strong> <t t-esc="med.product_quantity"/></div>
+                                        <div><strong>UoM:</strong> <t t-esc="med.product_UoM"/></div>
+                                        <div><strong>Price:</strong> <t t-esc="med.product_price"/></div>
+                                        <div><strong>Subtotal:</strong> <t t-esc="med.sub_total"/></div>
+                                    </div>
+                                </div>
+                                <span t-if="!case.medicines || !case.medicines.length" class="text-muted">No data</span>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" t-on-click="() => onEditCase(case.id)">
+                                    <i class="fa fa-edit"></i> Edit
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</t>

@@ -1,0 +1,83 @@
+<t t-name="clinic_management.Dashboard">
+    <div class="dashboard-content">
+        <!-- Dashboard Cards -->
+        <div class="dashboard-cards">
+            <div class="dashboard-card">
+                <span class="dashboard-title">Total Appointments</span>
+                <span class="dashboard-value"><t t-esc="state.appointmentCount"/></span>
+            </div>
+            <div class="dashboard-card">
+                <span class="dashboard-title">Total Patients</span>
+                <span class="dashboard-value"><t t-esc="state.patientCount"/></span>
+            </div>
+            <div class="dashboard-card">
+                <span class="dashboard-title">Total Doctors</span>
+                <span class="dashboard-value"><t t-esc="state.doctorCount"/></span>
+            </div>
+        </div>
+        
+        <!-- Tables Side by Side -->
+        <div class="dashboard-tables" style="display: flex; gap: 24px;">
+            <!-- Appointments List Section -->
+            <div class="appointments-list-container" style="flex: 1;">
+                <h3>All Appointments</h3>
+                <div class="appointments-list">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Date</th>
+                                <th>Patient</th>
+                                <th>Doctor</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="state.appointments" t-as="appointment" t-key="appointment.id">
+                                <td><t t-esc="appointment.name"/></td>
+                                <td><t t-esc="appointment.appointment_date"/></td>
+                                <td><t t-esc="appointment.patient_id[1]"/></td>
+                                <td><t t-esc="appointment.doctor_name[1]"/></td>
+                                <td>
+                                    <t t-if="appointment.appointment_end_date">
+                                        <t t-esc="appointment.appointment_date.split(' ')[1].substring(0, 5)"/> -
+                                        <t t-esc="appointment.appointment_end_date.split(' ')[1].substring(0, 5)"/>
+                                    </t>
+                                    <t t-else="">
+                                        <t t-esc="appointment.duration"/> min
+                                    </t>
+                                </td>
+                                <td><span t-attf-class="badge bg-#{appointment.stage === 'draft' ? 'secondary' : appointment.stage === 'confirm' ? 'primary' : appointment.stage === 'done' ? 'success' : 'danger'}">
+                                    <t t-esc="appointment.stage"/>
+                                </span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Patients List Section -->
+            <div class="patients-list-container" style="flex: 1;">
+                <h3>All Patients</h3>
+                <div class="patients-list">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="state.patients" t-as="patients" t-key="patients.id">
+                                <td><t t-esc="patients.name"/></td>
+                                <td><t t-esc="patients.email"/></td>
+                                <td><t t-esc="patients.phone"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</t>

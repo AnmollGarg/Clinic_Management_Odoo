@@ -1,0 +1,81 @@
+<odoo>
+    <record id="view_clinic_config_form" model="ir.ui.view">
+        <field name="name">clinic.config.form</field>
+        <field name="model">clinic.config</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="logo" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <label for="clinic_name" class="oe_edit_only"/>
+                        <h1><field name="clinic_name" placeholder="Clinic Name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <div string = "Address" class="o_address_format">
+                            <field name="clinic_address" placeholder="Address"/>
+                            <field name="street" class="o_address_street" placeholder="Street"/>
+                            <field name="street2" class="o_address_street" placeholder="Street 2"/>
+                            <field name="city" class="o_address_city" placeholder="City"/>
+                            <field name="state_id" class="o_address_state" placeholder="State" context="{'country_id': country_id, 'default_country_id': country_id}"/>
+                            <field name="zip" class="o_address_zip" placeholder="ZIP"/>
+                            <field name="country_id" class="o_address_country" placeholder="Country"/>
+                            </div>
+                            <field name="clinic_email" widget="email"/>
+                            <field name="clinic_website" widget="url"/>
+                        </group>
+                        <group>
+                            <field name="clinic_phone" widget="phone"/>
+                            <field name="clinic_mobile" widget="phone"/>
+                            <field name="clinic_doctor_id" widget="many2many_tags"/>
+                            <field name="clinic_receptionist_id"/>
+                            <field name="working_time_id"/> 
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="availability" string="Availability">
+                            <field name="availability_ids">
+                                <list editable="bottom">
+<!--                                    <field name="slot_type"/>-->
+                                    <field name="doctor_id"/>
+                                    <field name="doctor_appoitment_fees"/>
+                                    <field name="doctor_appoitment_followup_fees"/>
+                                </list>
+                            </field>
+                        </page>
+<!--                        <page name="other_info" string="Other Info">-->
+<!--                        </page>-->
+                    </notebook>
+                </sheet>
+                <chatter>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </chatter >
+            </form>
+        </field>
+    </record>
+
+    <record id="view_clinic_config_list" model="ir.ui.view">
+        <field name="name">clinic.config.list</field>
+        <field name="model">clinic.config</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="clinic_name"/>
+                <field name="clinic_doctor_id" widget="many2many_tags"/>
+                <field name="clinic_phone"/>
+                <field name="clinic_email"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_clinic_config" model="ir.actions.act_window">
+        <field name="name">Clinic Configuration</field>
+        <field name="res_model">clinic.config</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,91 @@
+<odoo>
+    <!-- Action for Cases -->
+    <record id="action_clinic_case" model="ir.actions.act_window">
+        <field name="name">Cases</field>
+        <field name="res_model">clinic.case</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- List View for Cases -->
+    <record id="view_clinic_case_list" model="ir.ui.view">
+        <field name="name">clinic.case.list</field>
+        <field name="model">clinic.case</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="case_id"/>
+                <field name="patient_id"/>
+                <field name="stage"/>
+                <field name="case_start_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View for Cases -->
+    <record id="view_clinic_case_form" model="ir.ui.view">
+        <field name="name">clinic.case.form</field>
+        <field name="model">clinic.case</field>
+        <field name="arch" type="xml">
+            <form string="Clinic Case">
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm" class="btn-success" invisible="stage != 'draft'"/>
+                    <button name="action_done" type="object" string="Done" class="btn-primary" invisible="stage != 'confirmed'"/>
+                    <button name="action_cancel" type="object" string="Cancel" class="btn-danger" invisible="stage not in ('draft','confirmed') or is_paid"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" class="btn-secondary" invisible="stage != 'cancelled'"/>
+                    <field name="stage" widget="statusbar"/>
+                    <button name="print_patient_case_report" string="Print Case Report" type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="case_id" readonly="1"/>
+                    </h1>
+                    <group col="2">
+                        <group>
+                            <field name="patient_id"/>
+                            <field name="age"/>
+                            <field name="gender_type"/>
+                            <field name="doctor_name"/>
+                        </group>
+                        <group>
+                            <field name="appointment_reference" options="{'no_create': true}"/>
+                            <field name="followup_for_appointment_id"
+                                   readonly="1"/>
+                            <field name="case_start_date"/>
+                            <field name="case_closed_date"/>
+                            <field name="responsible_person"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Problem and Solution">
+                            <field name="problem_solution_ids">
+                                <list editable="bottom">
+                                    <field name="problem"/>
+                                    <field name="solution"/>
+                                    <field name="description_ids"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Medicines">
+                            <field name="medicines_ids">
+                                <list editable="bottom">
+                                    <field name="product_id"/> 
+                                    <field name="product_description"/>
+                                    <field name="product_quantity"/>
+                                    <field name="product_UoM"/>
+                                    <field name="product_price"/>
+                                    <field name="sub_total"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter>
+
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids" widget="mail_thread"/>
+
+                </chatter >
+            </form>
+        </field>
+    </record>
+</odoo>

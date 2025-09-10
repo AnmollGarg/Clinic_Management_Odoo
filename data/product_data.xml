@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="product_doctor_fees" model="product.template">
+            <field name="name">Doctor Fees</field>
+            <field name="type">service</field>
+            <field name="list_price">0.0</field>
+            <field name="default_code">Doctor Fees</field>
+        </record>
+    </data>
+</odoo>

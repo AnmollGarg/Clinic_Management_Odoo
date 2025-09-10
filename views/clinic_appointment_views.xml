@@ -1,0 +1,122 @@
+<odoo>
+    <!-- Action for Appointments -->
+    <record id="action_clinic_appointment" model="ir.actions.act_window">
+        <field name="name">Appointments</field>
+        <field name="res_model">clinic.appointment</field>
+        <field name="view_mode">list,form,calendar</field>
+    </record>
+
+    <!-- List View for Appointments -->
+    <record id="view_clinic_appointment_list" model="ir.ui.view">
+        <field name="name">clinic.appointment.list</field>
+        <field name="model">clinic.appointment</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="priority" widget="priority"/>
+                <field name="doctor_name"/>
+                <field name="clinic_id"/>
+                <field name="stage"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Calendar View for Appointments -->
+    <record id="view_clinic_appointment_calendar" model="ir.ui.view">
+        <field name="name">clinic.appointment.calendar</field>
+        <field name="model">clinic.appointment</field>
+        <field name="arch" type="xml">
+            <calendar string="Appointments Calendar"
+                      date_start="appointment_date"
+                      date_stop="appointment_end_date"
+                      color="doctor_name"
+                      mode="week">
+                <field name="patient_id"/>
+                <field name="doctor_name"/>
+            </calendar>
+        </field>
+    </record>
+
+
+    <!-- Form View for Appointments -->
+    <record id="view_clinic_appointment_form" model="ir.ui.view">
+        <field name="name">clinic.appointment.form</field>
+        <field name="model">clinic.appointment</field>
+        <field name="arch" type="xml">
+            <form string="Appointment" readonly = "stage in ('done','cancelled')">
+                <header>
+                    <field name="stage" widget="statusbar"/>
+                    <button name="action_book" type="object" string="Book" class="btn-primary" invisible="stage != 'draft'"/>
+                    <button name="action_confirm" type="object" string="Confirm" class="btn-success" invisible="stage != 'booked'"/>
+                    <button name="action_done" type="object" string="Done" class="btn-primary" invisible="stage != 'confirm'"/>
+                    <button name="action_reset_to_defaults" type="object" string="Reset to Defaults" class="btn-secondary" invisible="stage != 'cancelled'"/>
+                    <button name="%(clinic_management.action_appointment_cancel_wizard)d" type="action" string="Cancel" class="btn-primary" invisible="stage not in ('confirm')"/>
+                    <button name="print_patient_appointment_report"
+                        string="Print Report"
+                        type="object"
+                            invisible="stage not in ('confirm')"
+                        class="btn-primary"/>
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name" readonly="1"/>
+                    </h1>
+                    <group col="2">
+                        <group string="Patient Clinic Details">
+                            <field name="patient_id"/>
+                            <field name="clinic_id"/>
+                            <field name="appointment_date" widget="datetime" options="{'format': 'yyyy-MM-dd HH:mm'}"/>
+                            <field name="appointment_end_date" widget="datetime" options="{'format': 'yyyy-MM-dd HH:mm'}"/>
+                            <field name="user_timezone" readonly="1"/>
+                            <field name="appointment_duration" readonly="1"/>
+                        </group>
+                        <group string="Doctor  Timing">
+                            <field name="doctor_name"/>
+                            <field name="is_doctor_available"/>
+                            <field name="booked_slots_times" readonly="1"/>
+                        </group>
+                    </group>
+                    <separator string="Other Information"/>
+                    <group col="2">
+                        <field name="responsible"/>
+                        <field name="appointment_type" widget="radio"/>
+                        <field name="priority" widget="priority"/>
+                    </group>
+                    <group>
+                        <field name="cancel_reason" invisible="stage != 'cancelled'"/>
+                    </group>
+                    <group>
+                        <field name="doctor_fees" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="followup_for_appointment_id"
+                               invisible="appointment_type != 'followup'"
+                               options="{'no_create': True}"/>
+                    </group>
+                    <notebook>
+                        <page string="Related Cases" name="related_cases">
+                            <field name="related_cases_ids">
+                                <list>
+                                    <field name="case_id"/>
+                                    <field name="doctor_name"/>
+                                    <field name="case_start_date"/>
+                                    <field name="case_closed_date"/>
+                                    <field name="stage"/>
+                                    <!-- <field name="is_paid"/> -->
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter>
+
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids" widget="mail_thread"/>
+
+                </chatter >
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,151 @@
+<odoo>
+    <!-- Reuse header/footer/external layout from patient_appointment_receipt.xml -->
+
+    <template id="patient_case_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="clinic_management.minimal_external_layout">
+                    <div class="page">
+                        <style>
+                            .header { font-size: 16px; font-weight: bold; }
+                            .sub-header { font-size: 14px; font-weight: bold; }
+                            .section-title { background: #888; color: #fff; font-weight: bold; padding: 4px; }
+                            .table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+                            .table th, .table td { border: 1px solid #333; padding: 6px; text-align: left; }
+                            .danger { color: #dc3545; }
+                            .clinic-header { margin-bottom: 15px; }
+                            .clinic-logo { float: right; max-height: 80px; }
+                            .clinic-details { margin-bottom: 10px; }
+                        </style>
+                        <div class="row mb-4">
+                            <div class="col-12 text-center">
+                                <h2 style="color: #7c7bad; font-weight: bold;">Patient Case Report</h2>
+                                <h3>CASE <t t-esc="doc.case_id"/></h3>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <strong>Patient Information</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-2">
+                                            <div class="col-5"><strong>Patient Name:</strong></div>
+                                            <div class="col-7"><span t-esc="doc.patient_id.name"/></div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-5"><strong>Gender Type:</strong></div>
+                                            <div class="col-7"><span t-esc="doc.gender_type"/></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <strong>Case Details</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-2">
+                                            <div class="col-5"><strong>Reference No:</strong></div>
+                                            <div class="col-7"><span t-esc="doc.appointment_reference.name"/></div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-5"><strong>Date:</strong></div>
+                                            <div class="col-7"><span t-esc="doc.case_start_date"/></div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-5"><strong>Stage:</strong></div>
+                                            <div class="col-7"><span t-esc="doc.stage"/></div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-5"><strong>Responsible Person:</strong></div>
+                                            <div class="col-7"><span t-esc="doc.responsible_person.name"/></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Medical Team Section -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <strong>Medical Team</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-2">
+                                            <div class="col-3"><strong>Consulted By:</strong></div>
+                                            <div class="col-9"><span t-esc="', '.join(doc.doctor_name.mapped('name'))"/></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Problems & Solutions -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <strong>Problems &amp; Solutions</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table">
+                                            <tr>
+                                                <th>Problem</th>
+                                                <th>Solution</th>
+                                            </tr>
+                                            <t t-foreach="doc.problem_solution_ids" t-as="ps">
+                                                <tr>
+                                                    <td><t t-esc="ps.problem"/></td>
+                                                    <td><t t-esc="ps.solution"/></td>
+                                                </tr>
+                                            </t>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Medicines -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <strong>Medicine &amp; Quantity</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table">
+                                            <tr>
+                                                <th>Medicine</th>
+                                                <th>Description</th>
+                                                <th>Qty.</th>
+                                                <th>Price</th>
+                                            </tr>
+                                            <t t-foreach="doc.medicines_ids" t-as="med">
+                                                <tr>
+                                                    <td><t t-esc="med.product_id.name"/></td>
+                                                    <td><t t-esc="med.product_description"/></td>
+                                                    <td><t t-esc="med.product_quantity"/></td>
+                                                    <td><t t-esc="med.product_price"/></td>
+                                                </tr>
+                                            </t>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="patient_case_report_action" model="ir.actions.report">
+        <field name="name">Patient Case Report</field>
+        <field name="model">clinic.case</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">clinic_management.patient_case_report</field>
+        <field name="print_report_name">'Patient Case Report - %s' % (object.case_id)</field>
+    </record>
+</odoo>
