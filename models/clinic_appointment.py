@@ -37,7 +37,6 @@ class ClinicAppointment(models.Model):
     
     doctor_name = fields.Many2one(
         'res.users',
-        string='Doctor Name',
         required=True,
         tracking=True,
         domain="[('is_doctor', '=', True)]",
@@ -75,7 +74,6 @@ class ClinicAppointment(models.Model):
         help="End date and time for the appointment"
     )
     appointment_duration = fields.Char(
-        string='Duration',
         compute='_compute_appointment_duration',
         help="Duration of the appointment in minutes"
     )
@@ -95,26 +93,22 @@ class ClinicAppointment(models.Model):
     )
 
     cancel_reason = fields.Text(
-        string='Cancellation Reason',
         help="Reason for cancelling the appointment",
         tracking=True,
     )
 
     user_timezone = fields.Char(
-        string='User Timezone',
         compute='_compute_user_timezone',
         help="Timezone of the current user"
     )
 
     is_doctor_available = fields.Boolean(
-        string='Doctor Available',
         compute='_compute_is_doctor_available',
         help="Indicates if the doctor is available at the selected time"
     )
 
     appointment_type = fields.Selection(
         [('fresh', 'Fresh Appointment'), ('followup', 'Follow Up')],
-        string='Appointment Type',
         required=True,
         default='fresh',
         tracking=True,
@@ -122,7 +116,6 @@ class ClinicAppointment(models.Model):
     )
 
     doctor_fees = fields.Float(
-        string='Doctor Fees',
         compute='_compute_doctor_fees',
         help="Appointment fees based on doctor and appointment type"
     )
@@ -135,7 +128,6 @@ class ClinicAppointment(models.Model):
     )
 
     booked_slots_times = fields.Char(
-        string='Booked Slots (Time)',
         compute='_compute_booked_slots_times',
         help="All booked time slots for the selected doctor and date"
     )
@@ -348,8 +340,7 @@ class ClinicAppointment(models.Model):
                     )
     # Prevent Deletion
     def unlink(self):
-        done_appointments = self.filtered(lambda rec: rec.stage == 'done')
-        if done_appointments:
+        if self.filtered(lambda rec: rec.stage == 'done'):
             raise UserError(self.env._("You cannot delete appointments that are in 'Done' stage."))
         return super(ClinicAppointment, self).unlink()
 

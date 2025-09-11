@@ -9,21 +9,19 @@ class ClinicWorkingTime(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string='Working Time Name', required=True, tracking=True)
-    average_hour_per_day = fields.Float(string='Average Hour Per Day', required=True, tracking=True)
+    average_hour_per_day = fields.Float( required=True, tracking=True)
     appointment_time = fields.Integer(
-        string='Appointment Time',
         required=True,
         help="Duration of each appointment in minutes (e.g., 30 for 30 minutes)",
         tracking=True
     )
     break_between_appointments = fields.Integer(
-        string='Break Between Appointments',
         required=True,
         help="Break time between appointments in minutes",
         tracking=True
     )
-    slot_per_day_morning = fields.Integer(string='Slots Per Day (Morning)', required=True, help = "Number of appointment slots available in the morning", tracking=True)
-    slot_per_day_evening = fields.Integer(string='Slots Per Day (Evening)', required=True, help = "Number of appointment slots available in the evening", tracking=True)
+    slot_per_day_morning = fields.Integer( required=True, help = "Number of appointment slots available in the morning", tracking=True)
+    slot_per_day_evening = fields.Integer( required=True, help = "Number of appointment slots available in the evening", tracking=True)
     timezone = fields.Many2one(
         'res.country',
         required=True,
@@ -31,9 +29,9 @@ class ClinicWorkingTime(models.Model):
         tracking=True
     )
 
-    work_from = fields.Float(string='Work From', required=True, help="Start time of the working day in hours (e.g., 9.0 for 9 AM)", tracking=True)
-    work_to = fields.Float(string='Work To', required=True, help="End time of the working day in hours (e.g., 17.0 for 5 PM)", tracking=True)
-    working_hours = fields.Float(string='Working Hours', required=False, help="Total working hours per day", compute='_compute_working_hours')
+    work_from = fields.Float( required=True, help="Start time of the working day in hours (e.g., 9.0 for 9 AM)", tracking=True)
+    work_to = fields.Float( required=True, help="End time of the working day in hours (e.g., 17.0 for 5 PM)", tracking=True)
+    working_hours = fields.Float(required=False, help="Total working hours per day", compute='_compute_working_hours')
     working_hour_ids = fields.One2many(
         'clinic.working.hour',
         'working_time_id',
@@ -83,30 +81,6 @@ class ClinicWorkingHour(models.Model):
     def _compute_name(self):
         for record in self:
             record.name = f"{record.day_of_week} {record.day_period}"
-
-    @api.depends('day_period')
-    def _compute_work_from(self):
-        for record in self:
-            if record.day_period == 'morning':
-                record.work_from = 9.0
-            elif record.day_period == 'afternoon':
-                record.work_from = 13.0
-            elif record.day_period == 'evening':
-                record.work_from = 17.0
-            else:
-                record.work_from = 0.0  
-
-    @api.depends('day_period')
-    def _compute_work_to(self):
-        for record in self:
-            if record.day_period == 'morning':
-                record.work_to = 12.0
-            elif record.day_period == 'afternoon':
-                record.work_to = 16.0
-            elif record.day_period == 'evening':
-                record.work_to = 20.0
-            else:
-                record.work_to = 0.0
 
     @api.depends('work_from', 'work_to')
     def _compute_day_period(self):

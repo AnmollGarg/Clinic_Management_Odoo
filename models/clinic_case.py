@@ -9,29 +9,28 @@ class ClinicCase(models.Model):
     _rec_name = 'case_id'
 
     is_paid = fields.Boolean(string='Paid',tracking = True)
-    invoice_created = fields.Boolean(string='Invoice Created', default=False, tracking=True)
+    invoice_created = fields.Boolean(default=False, tracking=True)
     patient_id = fields.Many2one('res.partner',string='Patient',domain=[('is_patient', '=', True)],tracking=True,ondelete='set null')
-    case_id = fields.Char(string='Case ID',readonly=True,tracking=True,)
-    appointment_reference = fields.Many2one('clinic.appointment',string='Appointment Reference',tracking=True,required = True,domain=[('stage', '=', 'confirm')],help="Reference to the confirmed appointment")
+    case_id = fields.Char(readonly=True,tracking=True,)
+    appointment_reference = fields.Many2one('clinic.appointment',tracking=True,required = True,domain=[('stage', '=', 'confirm')],help="Reference to the confirmed appointment")
     gender_type = fields.Selection([('child', 'Child'), ('adult', 'Adult'), ('old' , 'Old')],compute='_compute_gender_type',tracking=True)
-    case_start_date = fields.Date(string='Case Start Date',required=True,tracking=True,default=fields.Date.today,readonly =True)
-    case_closed_date = fields.Date(string='Case Closed Date',tracking=True,compute='_compute_case_closed_date',help = "Date when the case was closed")
-    doctor_name = fields.Many2one('res.users',string='Dr Name',required=True,tracking=True,ondelete='restrict',domain=[('is_doctor', '=', True)])
-    responsible_person = fields.Many2one('res.users',string='Responsible',required=True,tracking=True,ondelete='restrict')
-    stage = fields.Selection([('draft', 'Draft'),('confirmed', 'Confirmed'),('done', 'Done'),('cancelled', 'Cancelled')],string='Stage',tracking=True,default='draft',required=True)
+    case_start_date = fields.Date(required=True,tracking=True,default=fields.Date.today,readonly =True)
+    case_closed_date = fields.Date(tracking=True,compute='_compute_case_closed_date',help = "Date when the case was closed")
+    doctor_name = fields.Many2one('res.users',required=True,tracking=True,ondelete='restrict',domain=[('is_doctor', '=', True)])
+    responsible_person = fields.Many2one('res.users',required=True,tracking=True,ondelete='restrict')
+    stage = fields.Selection([('draft', 'Draft'),('confirmed', 'Confirmed'),('done', 'Done'),('cancelled', 'Cancelled')],tracking=True,default='draft',required=True)
     age = fields.Integer(related='patient_id.age',tracking=True,help="Age of the patient")
     problem_solution_ids = fields.One2many('clinic.case.problem.solution', 'case_id', string='Problem and Solution', tracking=True, required = True)
     medicines_ids = fields.One2many('clinic.case.medicines', 'case_id', string='Medicines', tracking=True, required =True)
-    case_number = fields.Char(string='Case Number', tracking=True)
+    case_number = fields.Char(tracking=True)
     clinic_id = fields.Many2one('clinic.config',string='Clinic',ondelete='set null',tracking=True,)
-    followup_for_appointment_id = fields.Many2one('clinic.appointment',string='Follow-up For',related='appointment_reference.followup_for_appointment_id',readonly=True)
+    followup_for_appointment_id = fields.Many2one('clinic.appointment',related='appointment_reference.followup_for_appointment_id',readonly=True)
 
 
 
     # prevent deletion of done cases
     def unlink(self):
-        done_cases = self.filtered(lambda rec: rec.stage == 'done')
-        if done_cases:
+        if self.filtered(lambda rec: rec.stage == 'done'):
             raise UserError("You cannot delete a case that is marked as done.")
         return super().unlink()
 
@@ -125,8 +124,7 @@ class ClinicCase(models.Model):
         ], limit=1)
 
         if existing_invoice:
-            self.invoice_created = True
-            self.stage = 'done'  
+            self.write({'invoice_created': True, 'stage': 'done'})
             return {
                 'name': 'Patient Invoice',
                 'view_mode': 'form',
@@ -138,8 +136,7 @@ class ClinicCase(models.Model):
         if existing_sale_order:
             invoice = existing_sale_order._create_invoices()
             invoice.action_post()
-            self.invoice_created = True
-            self.stage = 'done' 
+            self.write({'invoice_created': True, 'stage': 'done'})
             return {
                 'name': 'Patient Invoice',
                 'view_mode': 'form',

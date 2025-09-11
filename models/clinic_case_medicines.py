@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
 
 class ClinicCaseMedicines(models.Model):
     _name = 'clinic.case.medicines'
@@ -13,16 +12,15 @@ class ClinicCaseMedicines(models.Model):
         required=True,
         domain=[('categ_id', '=', 17)]
     )
-    product_name = fields.Char(string='Product Name')
-    product_description = fields.Text(string='Product Description')
-    product_quantity = fields.Integer(string='Product Quantity', required=True)
+    product_name = fields.Char()
+    product_description = fields.Text()
+    product_quantity = fields.Integer(required=True)
     product_UoM = fields.Many2one(
         'uom.uom',
         string='Unit of Measure',
         required=True,
     )
     product_price = fields.Monetary(
-        string='Product Price',
         required=True,
         currency_field='currency_id'
     )
@@ -35,7 +33,6 @@ class ClinicCaseMedicines(models.Model):
 
 
     sub_total = fields.Monetary(
-        string='Sub Total',
         compute='_compute_sub_total',
         currency_field='currency_id'
     )

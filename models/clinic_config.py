@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields
 
 class ClinicConfig(models.Model):
     _name = 'clinic.config'
@@ -7,12 +7,12 @@ class ClinicConfig(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
 
-    clinic_name = fields.Char(string='Clinic Name', required=True, tracking=True)
-    clinic_address = fields.Text(string='Address' ,help ="Enter the full address of the clinic", tracking=True)
-    clinic_phone = fields.Char(string="Phone", default="", required=True, tracking=True)
-    clinic_email = fields.Char(string='Email Address', required=True, tracking=True)
-    clinic_website = fields.Char(string='Website', tracking=True)
-    clinic_mobile = fields.Char(string="Mobile", default="", tracking=True)
+    clinic_name = fields.Char(required=True, tracking=True)
+    clinic_address = fields.Text(help ="Enter the full address of the clinic", tracking=True)
+    clinic_phone = fields.Char(default="", required=True, tracking=True)
+    clinic_email = fields.Char(required=True, tracking=True)
+    clinic_website = fields.Char(tracking=True)
+    clinic_mobile = fields.Char(default="", tracking=True)
     clinic_doctor_id = fields.Many2many(
         'res.users',
         string='Doctor',
@@ -31,7 +31,6 @@ class ClinicConfig(models.Model):
 
     available_time_slots = fields.Selection(
         [('morning', 'Morning'), ('afternoon', 'Afternoon'), ('evening', 'Evening')],
-        string='Available Time Slots',
         required=True,
         default='morning',
         tracking=True,
@@ -72,6 +71,6 @@ class ClinicAvailability(models.Model):
     #     required=True
     # )
     doctor_id = fields.Many2one('res.users', string='Dr Name', required=True, domain = [('is_doctor', '=', True)])
-    doctor_appoitment_fees = fields.Float(string='Appointment Fees', required=True, tracking=True)
-    doctor_appoitment_followup_fees = fields.Float(string='Follow-up Fees', required=True, tracking=True)
+    doctor_appoitment_fees = fields.Float(required=True, tracking=True)
+    doctor_appoitment_followup_fees = fields.Float(required=True, tracking=True)
     clinic_config_id = fields.Many2one('clinic.config', string='Clinic Config', ondelete='cascade')

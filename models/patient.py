@@ -5,5 +5,5 @@ class ClinicPatient(models.Model):
     _description = 'Clinic Patient'
 
     name = fields.Char(string='Patient Name', required=True)
-    email = fields.Char(string='Email')
+    email = fields.Char()
     image_1920 = fields.Binary("Image", attachment=True)

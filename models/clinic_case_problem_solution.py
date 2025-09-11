@@ -1,5 +1,4 @@
-from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo import models, fields
 
 class ClinicCaseProblemSolution(models.Model):
     _name = 'clinic.case.problem.solution'
