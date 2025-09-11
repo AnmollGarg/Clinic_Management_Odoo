@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class ClinicWorkingTime(models.Model):
@@ -122,4 +123,16 @@ class ClinicWorkingHour(models.Model):
                 record.day_period = 'half_day'
             else:
                 record.day_period = 'custom'
+
+    @api.constrains('work_from', 'work_to', 'working_time_id')
+    def _check_working_time_range(self):
+        for record in self:
+            if record.working_time_id:
+                clinic_from = record.working_time_id.work_from
+                clinic_to = record.working_time_id.work_to
+                if record.work_from < clinic_from or record.work_to > clinic_to:
+                    raise ValidationError(
+                        "Doctor's working hours must be within the clinic's working time: "
+                        f"{clinic_from} to {clinic_to}."
+                    )
 
