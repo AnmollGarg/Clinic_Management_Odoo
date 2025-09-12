@@ -37,9 +37,17 @@ export class DoctorDashboard extends Component {
                 { order: "appointment_date desc", limit: 50 }
             );
             this.state.allAppointments = appointments;
-            const now = new Date().toISOString().slice(0, 19);
-            this.state.upcomingAppointments = appointments.filter(a => a.appointment_date > now && a.stage !== "done" && a.stage !== "cancelled");
-            this.state.ongoingAppointments = appointments.filter(a => a.appointment_date <= now && a.stage === "confirm");
+            const now = new Date();
+            const todayStr = now.toISOString().slice(0, 10);
+            this.state.upcomingAppointments = appointments.filter(
+                a => a.appointment_date > now.toISOString().slice(0, 19) && a.stage !== "done" && a.stage !== "cancelled"
+            );
+            this.state.ongoingAppointments = appointments.filter(
+                a =>
+                    a.stage === "confirm" &&
+                    a.appointment_date &&
+                    a.appointment_date.slice(0, 10) === todayStr
+            );
             this.state.outgoingAppointments = appointments.filter(a => a.stage === "done" || a.stage === "cancelled");
             this.state.appointments = appointments.slice(0, 10);
 
@@ -72,6 +80,21 @@ export class DoctorDashboard extends Component {
                 },
             });
         };
+
+    }
+
+    formatLocalDatetime(utcString) {
+        if (!utcString) return '';
+        const date = new Date(utcString.replace(' ', 'T') + 'Z');
+        return date.toLocaleString(undefined, {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, 
+        });
     }
 
     getStageColor(stage) {
@@ -83,6 +106,4 @@ export class DoctorDashboard extends Component {
             case "cancelled": return "red";
             default: return "gray";
         }
-    }
-}
-
+    }}

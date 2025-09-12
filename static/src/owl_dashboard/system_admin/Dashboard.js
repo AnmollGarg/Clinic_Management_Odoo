@@ -48,5 +48,19 @@ export class Dashboard extends Component {
             );
         });
     }
+
+    formatLocalDatetime(utcString) {
+        if (!utcString) return '';
+        const date = new Date(utcString.replace(' ', 'T') + 'Z');
+        return date.toLocaleString(undefined, {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, 
+        });
+    }
 }
 Dashboard.template = "clinic_management.Dashboard";

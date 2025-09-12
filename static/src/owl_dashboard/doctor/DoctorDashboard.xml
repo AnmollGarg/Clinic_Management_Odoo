@@ -44,7 +44,7 @@
                                 <td><t t-esc="appt.name"/></td>
                                 <td><t t-esc="appt.patient_id &amp;&amp; appt.patient_id[1]"/></td>
                                 <td><t t-esc="appt.doctor_name &amp;&amp; appt.doctor_name[1]"/></td>
-                                <td><t t-esc="appt.appointment_date"/></td>
+                                <td><t t-esc="formatLocalDatetime(appt.appointment_date)"/></td>
                                 <td>
                                     <span t-attf-class="badge bg-#{getStageColor(appt.stage)}">
                                         <t t-esc="appt.stage"/>
@@ -103,7 +103,7 @@
                     <div><strong>Reference:</strong> <t t-esc="appt.name"/></div>
                     <div><strong>Patient:</strong> <t t-esc="appt.patient_id &amp;&amp; appt.patient_id[1]"/></div>
                     <div><strong>Doctor:</strong> <t t-esc="appt.doctor_name &amp;&amp; appt.doctor_name[1]"/></div>
-                    <div><strong>Date:</strong> <t t-esc="appt.appointment_date"/></div>
+                    <div><strong>Date:</strong> <t t-esc="formatLocalDatetime(appt.appointment_date)"/></div>
                     <div><strong>Status:</strong>
                         <span t-attf-class="badge bg-#{getStageColor(appt.stage)}"><t t-esc="appt.stage"/></span>
                     </div>

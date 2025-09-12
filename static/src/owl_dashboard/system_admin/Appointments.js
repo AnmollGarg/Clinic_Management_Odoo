@@ -104,8 +104,16 @@ export class Appointments extends Component {
 
     formatDateTime(dateTime) {
         if (!dateTime) return "";
-        const date = new Date(dateTime);
-        return date.toLocaleString();
+        const date = new Date(dateTime.replace(' ', 'T') + 'Z');
+        return date.toLocaleString(undefined, {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        });
     }
 
     getStageClass(stage) {

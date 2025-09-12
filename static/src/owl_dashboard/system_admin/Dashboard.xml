@@ -36,13 +36,13 @@
                         <tbody>
                             <tr t-foreach="state.appointments" t-as="appointment" t-key="appointment.id">
                                 <td><t t-esc="appointment.name"/></td>
-                                <td><t t-esc="appointment.appointment_date"/></td>
+                                <td><t t-esc="formatLocalDatetime(appointment.appointment_date)"/></td>
                                 <td><t t-esc="appointment.patient_id[1]"/></td>
                                 <td><t t-esc="appointment.doctor_name[1]"/></td>
                                 <td>
                                     <t t-if="appointment.appointment_end_date">
-                                        <t t-esc="appointment.appointment_date.split(' ')[1].substring(0, 5)"/> -
-                                        <t t-esc="appointment.appointment_end_date.split(' ')[1].substring(0, 5)"/>
+                                        <t t-esc="formatLocalDatetime(appointment.appointment_date).split(', ')[1].substring(0, 5)"/> -
+                                        <t t-esc="formatLocalDatetime(appointment.appointment_end_date).split(', ')[1].substring(0, 5)"/>
                                     </t>
                                     <t t-else="">
                                         <t t-esc="appointment.duration"/> min
