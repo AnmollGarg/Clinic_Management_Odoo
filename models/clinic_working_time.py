@@ -76,6 +76,14 @@ class ClinicWorkingHour(models.Model):
     working_time_id = fields.Many2one('clinic.working.time', string='Working Time', ondelete='cascade', tracking=True)
     doctor_name = fields.Many2one('res.users', string='Doctor', domain=[('is_doctor', '=', True)], required=True, tracking=True)
 
+    _sql_constraints = [
+        (
+            'unique_doctor_day_working_time',
+            'unique(doctor_name, day_of_week, working_time_id)',
+            'A doctor can have only one working hour entry per day of the week for the same working time.'
+        ),
+    ]
+
     #compute functions
     @api.depends('day_of_week', 'day_period')
     def _compute_name(self):
@@ -98,15 +106,18 @@ class ClinicWorkingHour(models.Model):
             else:
                 record.day_period = 'custom'
 
-    @api.constrains('work_from', 'work_to', 'working_time_id')
-    def _check_working_time_range(self):
+    @api.constrains('work_from', 'work_to', 'day_of_week', 'doctor_name')
+    def _check_no_overlap(self):
         for record in self:
-            if record.working_time_id:
-                clinic_from = record.working_time_id.work_from
-                clinic_to = record.working_time_id.work_to
-                if record.work_from < clinic_from or record.work_to > clinic_to:
-                    raise ValidationError(
-                        "Doctor's working hours must be within the clinic's working time: "
-                        f"{clinic_from} to {clinic_to}."
-                    )
-
+            domain = [
+                ('id', '!=', record.id),
+                ('doctor_name', '=', record.doctor_name.id),
+                ('day_of_week', '=', record.day_of_week),
+                ('work_from', '<', record.work_to),
+                ('work_to', '>', record.work_from),
+            ]
+            overlap = self.search_count(domain)
+            if overlap:
+                raise ValidationError(
+                    "You cannot have overlapping working hours for the same doctor, day, and working time."
+                )

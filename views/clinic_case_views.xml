@@ -40,7 +40,7 @@
                     </h1>
                     <group col="2">
                         <group>
-                            <field name="patient_id"/>
+                            <field name="patient_id" readonly = "stage in ('done','cancelled')"/>
                             <field name="age"/>
                             <field name="gender_type"/>
                             <field name="doctor_name" readonly = "stage in ('done','cancelled')"/>
